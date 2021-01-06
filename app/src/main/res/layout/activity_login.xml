@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:weightSum="1">
+
+    <!-- Login progress -->
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="이름"
+        android:ems="10"
+        android:id="@+id/name" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:hint="전화번호"
+        android:ems="10"
+        android:id="@+id/phone" />
+
+    <Button
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="로그인"
+        android:id="@+id/login"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.09" />
+
+
+</LinearLayout>

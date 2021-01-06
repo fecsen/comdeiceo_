@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1082101048705",
+    "firebase_url": "https://dongeui-f5c63.firebaseio.com",
+    "project_id": "dongeui-f5c63",
+    "storage_bucket": "dongeui-f5c63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082101048705:android:6aac9fc8724c17b8",
+        "android_client_info": {
+          "package_name": "com.dei.ceo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1082101048705-2tp85v1fvjs5hpmfgd75aqhqk3lgqev4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe8eWMgqkVlF0lpHJW09rekpqjBcSU9Rk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

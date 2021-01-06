@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.dei.ceo">
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <activity android:name=".SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme"
+            android:label="로그인"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".NoticeFragment"
+            android:theme="@style/AppTheme"
+            android:icon="@mipmap/ic_launcher"
+            android:label="공지사항"
+            >
+        </activity>
+        <activity android:name=".PermissionActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
+        </activity>
+        <activity android:name=".NoInternetActivity"
+            android:theme="@style/AppTheme"
+            android:label="인터넷 연결확인"
+            />
+        <activity android:name=".MemberSearchActivity"
+            android:theme="@style/AppTheme"
+            android:label="회원검색"
+            />
+        <activity android:name=".MemberDetailActivity"
+            android:theme="@style/AppTheme"
+            android:label="회원검색"
+            />
+        <activity
+            android:name=".SearchActivity"
+            android:theme="@style/AppTheme"
+            android:label="회원검색"
+            >
+        </activity>
+        <activity
+            android:name=".LawActivity"
+            android:theme="@style/AppTheme"
+            android:label="동창회칙"
+            >
+        </activity>
+        <activity
+            android:name=".EthernetActivity"
+            android:theme="@style/AppTheme"
+            android:label="조직도"
+            >
+        </activity>
+        <activity
+            android:name=".ScheduleActivity"
+            android:theme="@style/AppTheme"
+            android:label="행사일정"
+            >
+        </activity>
+        <activity
+            android:name=".LeaderSearchActivity"
+            android:theme="@style/AppTheme"
+            android:label="기수별 검색"
+            >
+        </activity>
+        <activity
+            android:name=".LeaderSearchDetailActivity"
+            android:theme="@style/AppTheme"
+            android:label="기수별 검색"
+            >
+        </activity>
+        <activity
+            android:name=".ProfessionalActivity"
+            android:theme="@style/AppTheme"
+            android:label="원장단"
+            >
+        </activity>
+        <activity android:name=".showAlert"
+            android:screenOrientation="unspecified"
+            android:theme="@android:style/Theme.Material.Light.Dialog"
+            android:launchMode="singleTask"
+            tools:targetApi="lollipop">
+        </activity>
+        <service
+            android:name=".FireBaseMessagingService"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <!--    <activity
+               android:name=".LawActivity"
+               android:screenOrientation="portrait"
+               >
+           </activity>
+           <activity
+               android:name=".SearchActivity"
+               android:screenOrientation="portrait"
+               >
+           </activity>
+           <activity
+               android:name=".EthernetActivity"
+               android:screenOrientation="portrait"
+               >
+           </activity>
+
+          <activity
+               android:name=".AdvertiseActivity"
+               android:screenOrientation="portrait"
+               >
+           </activity> -->
+
+    </application>
+
+</manifest>

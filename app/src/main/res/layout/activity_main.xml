@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff"
+    android:layout_height="match_parent"
+    android:fillViewport="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mainn"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/msub"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:background="@drawable/bg"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img01"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_height="match_parent" />
+
+            <com.ssomai.android.scalablelayout.ScalableLayout
+                android:id="@+id/mmsub"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                sl:scale_base_height="50"
+                sl:scale_base_width="100">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="500dp"
+
+                    android:layout_height="200dp"
+                    android:paddingLeft="7dp"
+                    android:src="@drawable/logo"
+                    sl:scale_height="20"
+                    sl:scale_width="50" />
+            </com.ssomai.android.scalablelayout.ScalableLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_below="@+id/mmsub"
+                android:layout_marginTop="5dp"
+                sl:scale_height="20"
+                sl:scale_width="20">
+
+                <TextView
+                    android:id="@+id/not"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_toStartOf="@+id/date1"
+                    android:text="공지사항"
+                    android:textColor="@android:color/holo_blue_bright"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/date1"
+                    android:layout_width="250dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+
+                    android:gravity="right"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/not"
+                    android:layout_marginLeft="6dp"
+                    android:onClick="title11"
+                    android:textColor="#ffffff"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/open"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_alignBottom="@+id/title1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="5dp"
+                    android:background="#ffffff"
+                    android:onClick="openn"
+                    android:text="OPEN"
+                    android:textSize="20dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <com.ssomai.android.scalablelayout.ScalableLayout
+            android:id="@+id/sl3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/sl2"
+            android:layout_marginTop="0dp"
+            android:background="#ffffff"
+            android:paddingTop="20dp"
+            sl:scale_base_height="260"
+            sl:scale_base_width="700">
+
+            <ImageView
+                android:id="@+id/iv5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="schedulee"
+                android:src="@drawable/schedule"
+                sl:scale_height="180"
+                sl:scale_left="255"
+                sl:scale_width="180" />
+
+            <ImageView
+                android:id="@+id/iv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="noticee"
+                android:src="@drawable/notice"
+                sl:scale_height="180"
+                sl:scale_left="20"
+                sl:scale_width="180" />
+
+            <ImageView
+                android:id="@+id/iv4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="searchh"
+                android:src="@drawable/search"
+                sl:scale_height="180"
+                sl:scale_left="493"
+                sl:scale_width="180" />
+        </com.ssomai.android.scalablelayout.ScalableLayout>
+        <com.ssomai.android.scalablelayout.ScalableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:background="#ffffff"
+            android:layout_below="@+id/scalableLayout1"
+            sl:scale_base_width="700"
+            sl:scale_base_height="280">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:onClick="etherr"
+                android:src="@drawable/ether"
+                sl:scale_width="180"
+                sl:scale_height="180"
+                sl:scale_left="255" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="laww"
+                android:src="@drawable/lawicon"
+                sl:scale_width="180"
+                sl:scale_height="180"
+                sl:scale_left="20" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="advv"
+                android:src="@drawable/adv"
+                sl:scale_width="180"
+                sl:scale_height="180"
+                sl:scale_left="493" />
+        </com.ssomai.android.scalablelayout.ScalableLayout>
+    </LinearLayout>
+</ScrollView>
