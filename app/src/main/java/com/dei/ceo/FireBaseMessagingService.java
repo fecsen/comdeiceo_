@@ -12,7 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -66,7 +66,7 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
 
             //request
             Request request = new Request.Builder()
-                    .url("https://dei.hivecom.co.kr/dei/reg.php")
+                    .url("http://dei.hivecom.co.kr/dei/reg.php")
                     .post(body)
                     .build();
             try {

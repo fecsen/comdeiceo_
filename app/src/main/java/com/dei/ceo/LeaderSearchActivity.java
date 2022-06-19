@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -79,6 +79,8 @@ public class LeaderSearchActivity extends AppCompatActivity implements View.OnCl
         b27.setOnClickListener(this);
         Button b28 = (Button) findViewById(R.id.b28);
         b28.setOnClickListener(this);
+        Button b29 = (Button) findViewById(R.id.b29);
+        b29.setOnClickListener(this);
   /*      myDbHelper = new DataBaseHelper(null);
         myDbHelper = new DataBaseHelper(this);
 
@@ -281,6 +283,12 @@ public class LeaderSearchActivity extends AppCompatActivity implements View.OnCl
             case R.id.b28:
 
                 intent.putExtra("group_name","28");
+                startActivity(intent);
+                break;
+
+            case R.id.b29:
+
+                intent.putExtra("group_name","29");
                 startActivity(intent);
                 break;
         }

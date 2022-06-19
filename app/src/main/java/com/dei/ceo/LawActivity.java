@@ -1,12 +1,9 @@
 package com.dei.ceo;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LawActivity extends AppCompatActivity {
     ViewPager pager;

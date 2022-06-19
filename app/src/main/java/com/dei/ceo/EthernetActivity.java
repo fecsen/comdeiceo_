@@ -2,10 +2,8 @@ package com.dei.ceo;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -26,7 +24,7 @@ public class EthernetActivity extends AppCompatActivity {
         mImageView = (ImageView) findViewById(R.id.ether);
 
         // Set the Drawable displayed
-        Drawable bitmap = getResources().getDrawable(R.drawable.etherr);
+        Drawable bitmap = getResources().getDrawable(R.drawable.ether288);
         mImageView.setImageDrawable(bitmap);
 
         // Attach a PhotoViewAttacher, which takes care of all of the zooming functionality.
