@@ -69,6 +69,22 @@
                     android:textSize="20sp"
 
                     />
+                <ImageButton
+                    android:id="@+id/ib_detail_sms"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+
+                    android:background="@drawable/ico_sms"
+                    android:layout_marginLeft="10sp"
+                    />
+                <ImageButton
+                    android:id="@+id/ib_detail_dial"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ico_dial"
+                    android:layout_marginLeft="10sp"
+
+                    />
 
 
             </LinearLayout>

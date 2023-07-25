@@ -24,7 +24,7 @@ public class EthernetActivity extends AppCompatActivity {
         mImageView = (ImageView) findViewById(R.id.ether);
 
         // Set the Drawable displayed
-        Drawable bitmap = getResources().getDrawable(R.drawable.ether288);
+        Drawable bitmap = getResources().getDrawable(R.drawable.ether3);
         mImageView.setImageDrawable(bitmap);
 
         // Attach a PhotoViewAttacher, which takes care of all of the zooming functionality.

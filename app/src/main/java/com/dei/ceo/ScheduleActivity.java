@@ -21,7 +21,7 @@ public class ScheduleActivity extends AppCompatActivity {
         ImageView mImageView;
         PhotoViewAttacher mAttacher;
         mImageView = (ImageView) findViewById(R.id.schedule);
-        Drawable bitmap = getResources().getDrawable(R.drawable.schedule288);
+        Drawable bitmap = getResources().getDrawable(R.drawable.schedule30);
         mImageView.setImageDrawable(bitmap);
         mAttacher = new PhotoViewAttacher(mImageView);
     }

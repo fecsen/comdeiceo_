@@ -446,6 +446,50 @@
                 sl:scale_left="240"
                 sl:scale_width="250" />
         </com.ssomai.android.scalablelayout.ScalableLayout>
+
+        <com.ssomai.android.scalablelayout.ScalableLayout
+            android:id="@+id/g11"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            sl:scale_base_height="244"
+            sl:scale_base_width="725">
+
+            <Button
+                android:id="@+id/b31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#3886c1"
+                android:text="31기"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                sl:scale_height="245"
+                sl:scale_left="-3"
+                sl:scale_width="250" />
+
+            <Button
+                android:id="@+id/b33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#003b68"
+                android:text="33기"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                sl:scale_height="245"
+                sl:scale_left="480"
+                sl:scale_width="250" />
+
+            <Button
+                android:id="@+id/b32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#084f87"
+                android:text="32기"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                sl:scale_height="245"
+                sl:scale_left="240"
+                sl:scale_width="250" />
+        </com.ssomai.android.scalablelayout.ScalableLayout>
     </LinearLayout>
 
 </ScrollView>

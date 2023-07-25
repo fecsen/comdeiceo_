@@ -81,6 +81,8 @@ public class LeaderSearchActivity extends AppCompatActivity implements View.OnCl
         b28.setOnClickListener(this);
         Button b29 = (Button) findViewById(R.id.b29);
         b29.setOnClickListener(this);
+        Button b30 = (Button) findViewById(R.id.b30);
+        b30.setOnClickListener(this);
   /*      myDbHelper = new DataBaseHelper(null);
         myDbHelper = new DataBaseHelper(this);
 
@@ -289,6 +291,12 @@ public class LeaderSearchActivity extends AppCompatActivity implements View.OnCl
             case R.id.b29:
 
                 intent.putExtra("group_name","29");
+                startActivity(intent);
+                break;
+
+            case R.id.b30:
+
+                intent.putExtra("group_name","30");
                 startActivity(intent);
                 break;
         }

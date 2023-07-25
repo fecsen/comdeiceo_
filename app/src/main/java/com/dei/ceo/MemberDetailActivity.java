@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class MemberDetailActivity extends AppCompatActivity {
         TextView tv_jobfax = (TextView) findViewById(R.id.tv_detail_jobfax);
         TextView tv_homeaddr = (TextView) findViewById(R.id.tv_detail_homeaddr);
         TextView tv_hometel = (TextView) findViewById(R.id.tv_detail_hometel);
+        ImageButton ib_sms = (ImageButton) findViewById(R.id.ib_detail_sms);
+        ImageButton ib_dial = (ImageButton) findViewById(R.id.ib_detail_dial);
 
         Intent intent = getIntent(); // 蹂대궡�삩 Intent瑜� �뼸�뒗�떎
 
@@ -98,7 +101,38 @@ public class MemberDetailActivity extends AppCompatActivity {
         tv_homeaddr.setText(intent.getStringExtra("home_addr"));
         tv_hometel.setText(intent.getStringExtra("home_tel"));
 
-    }
+        final String phone_number = intent.getStringExtra("cellphone");
+
+
+        ib_sms.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i_sms;
+                Uri uri;
+
+                i_sms = new Intent(Intent.ACTION_SENDTO);
+                uri = Uri.parse("sms:" + phone_number.toString());
+                i_sms.setData(uri);
+                //  intent.putExtra("sms_body", ed2.getText().toString());
+                startActivity(i_sms);
+
+            }
+        });
+
+        ib_dial.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i_dial;
+                Uri uri;
+
+                i_dial = new Intent(Intent.ACTION_DIAL);
+                uri = Uri.parse("tel:" + phone_number.toString());
+                i_dial.setData(uri);
+                //  intent.putExtra("sms_body", ed2.getText().toString());
+                startActivity(i_dial);
+
+            }
+        });}
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar_member, menu);
@@ -112,7 +146,7 @@ public class MemberDetailActivity extends AppCompatActivity {
                 Uri uri;
                 Intent intent = getIntent();
                 String phone_number = intent.getStringExtra("cellphone");
-                i_dial = new Intent(Intent.ACTION_CALL);
+                i_dial = new Intent(Intent.ACTION_DIAL);
                 uri = Uri.parse("tel:" + phone_number.toString());
                 i_dial.setData(uri);
                 //  intent.putExtra("sms_body", ed2.getText().toString());

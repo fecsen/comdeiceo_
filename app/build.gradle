@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.dei.ceo"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 48
-        versionName "2.3"
+        targetSdkVersion 31
+        versionCode 55
+        versionName "2.4"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -39,9 +39,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging:23.0.5'
     //기타
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'com.github.chrisbanes.photoview:library:1.2.4'
     implementation 'org.kie.modules:org-jsoup:6.5.0.Final'
 }
