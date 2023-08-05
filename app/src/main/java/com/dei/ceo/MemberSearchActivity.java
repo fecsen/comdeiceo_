@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,12 +34,12 @@ import java.io.InputStream;
 
 public class MemberSearchActivity extends AppCompatActivity {
 
-    ListView listview_search = null;
+    RecyclerView listview_search = null;
     DataBaseHelper myDbHelper_search;
     SQLiteDatabase db_search;
     String query_search;
     Cursor cursor_search;
-    DBAdapter_search myadapter;
+    DBAdapter_search dbadapter_search;
     TextView tv_numberoflist;
 
     @Override
@@ -177,7 +179,7 @@ public class MemberSearchActivity extends AppCompatActivity {
 
             startManagingCursor(cursor_search);
 
-            listview_search = (ListView)this.findViewById(R.id.lv_search);
+            listview_search = (RecyclerView) this.findViewById(R.id.lv_search);
             listview_search.setAdapter(dbadapter_search);
             tv_numberoflist.setText("검색하신 결과는 총"+cursor_search.getCount()+"명 입니다.");
 
@@ -186,7 +188,7 @@ public class MemberSearchActivity extends AppCompatActivity {
         {
             startManagingCursor(cursor_search);
 
-            listview_search = (ListView)this.findViewById(R.id.lv_search);
+            listview_search = (RecyclerView) this.findViewById(R.id.lv_search);
             listview_search.setAdapter(dbadapter_search);
             tv_numberoflist.setText("검색하신 결과는 총"+cursor_search.getCount()+"명 입니다.");
 
@@ -229,7 +231,7 @@ public class MemberSearchActivity extends AppCompatActivity {
         @Override
         public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
             LayoutInflater inflater = LayoutInflater.from(arg0);
-            View v = inflater.inflate(R.layout.listlayout,arg2, false);
+            View v = inflater.inflate(R.layout.item_member_cardview,arg2, false);
             return v;
         }
 
