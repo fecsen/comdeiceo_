@@ -19,7 +19,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static String DB_PATH = "/data/data/com.dei.ceo/databases/";
     private static String DB_NAME = "member.db";
-    private static final int DB_VERSION  = 10;
+    private static final int DB_VERSION  = 13;
     private static final String SP_KEY_DB_VER = "db_ver";
     private SQLiteDatabase myDataBase;
     private final Context myContext;

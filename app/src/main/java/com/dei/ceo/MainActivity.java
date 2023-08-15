@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     Handler handler = new Handler();
     ImageView iv;
     JSONArray peoples = null;
-    private int ver = 55;
+    private int ver = 56;
     private ProgressDialog dialog;
     String xml;
     ArrayList<HashMap<String, String>> personList;
