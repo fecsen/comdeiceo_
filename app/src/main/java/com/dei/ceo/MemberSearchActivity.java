@@ -11,8 +11,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,19 +29,39 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemberSearchActivity extends AppCompatActivity {
-
-    RecyclerView listview_search = null;
+    HttpResponse response;
+    EditText et;
+    List<NameValuePair> nameValuePairs;
+    HttpPost httppost;
+    HttpClient httpclient;
+    ListView listview_search = null;
     DataBaseHelper myDbHelper_search;
     SQLiteDatabase db_search;
     String query_search;
     Cursor cursor_search;
-    DBAdapter_search dbadapter_search;
+    DBAdapter_search myadapter;
     TextView tv_numberoflist;
 
+    Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -55,16 +75,16 @@ public class MemberSearchActivity extends AppCompatActivity {
         EditText testEdit = (EditText) findViewById(R.id.et_name);
         testEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-                                               @Override
-                                               public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                                                   // 요기서 입력된 이벤트가 무엇인지 찾아서 실행해 줌
-                                                   switch(actionId) {
-                                                       case EditorInfo.IME_ACTION_DONE:
-                                                           btn_search.performClick();
-                                                           break;
-                                                   }
-                                                   return false;
-                                               }
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                // 요기서 입력된 이벤트가 무엇인지 찾아서 실행해 줌
+                switch(actionId) {
+                    case EditorInfo.IME_ACTION_DONE:
+                        btn_search.performClick();
+                        break;
+                }
+                return false;
+            }
         });
 
 
@@ -94,10 +114,42 @@ public class MemberSearchActivity extends AppCompatActivity {
 
                     try {
 
-                        myDbHelper_search.createDataBase();
+                        httpclient = new DefaultHttpClient();
+                        httppost = new HttpPost("https://dei.hivecom.co.kr/dei/search.php"); // 로그인PHP
+                        // 정보불러오기
+                        nameValuePairs = new ArrayList<NameValuePair>(1);
+                        // EditText내용 불러오기
+                        nameValuePairs.add(new BasicNameValuePair("name", et.getText().toString()));
+                        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+                        // httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                        response = httpclient.execute(httppost);
+
+                        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                        final String response = httpclient.execute(httppost, responseHandler);
+
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                //tv.setText("PHP 결과 : " + response);
+                                dialog.dismiss();
+                            }
+                        });
+
+                        if (response.equalsIgnoreCase("{\"result\":[]}")) {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    searchfail();
+                                }
+                            });
+
+
+                        } else {
+                            searchsuccess();
+                        }
+
+
                     } catch (IOException ioe) {
 
-                        throw new Error("데이터베이스를 생성할 수 없습니다.\n 개발자에게 문의하세요!\n010.4561.8282");
+
 
                     }
 
@@ -179,7 +231,7 @@ public class MemberSearchActivity extends AppCompatActivity {
 
             startManagingCursor(cursor_search);
 
-            listview_search = (RecyclerView) this.findViewById(R.id.lv_search);
+            listview_search = (ListView)this.findViewById(R.id.lv_search);
             listview_search.setAdapter(dbadapter_search);
             tv_numberoflist.setText("검색하신 결과는 총"+cursor_search.getCount()+"명 입니다.");
 
@@ -188,7 +240,7 @@ public class MemberSearchActivity extends AppCompatActivity {
         {
             startManagingCursor(cursor_search);
 
-            listview_search = (RecyclerView) this.findViewById(R.id.lv_search);
+            listview_search = (ListView)this.findViewById(R.id.lv_search);
             listview_search.setAdapter(dbadapter_search);
             tv_numberoflist.setText("검색하신 결과는 총"+cursor_search.getCount()+"명 입니다.");
 
@@ -215,10 +267,8 @@ public class MemberSearchActivity extends AppCompatActivity {
             final TextView tv_cellphone= (TextView) arg0.findViewById(R.id.tv_cellphone);
 
             String graphUri=arg2.getString(arg2.getColumnIndex("profile"));
-            graphUri="images/"+graphUri;
-
-            Bitmap bitmap = loadBitmap(graphUri);
-            img_profile.setImageBitmap(bitmap);
+            String profile_url = "https://dei.hivecom.co.kr/dei/profile/" + graphUri;
+            imgload(profile_url, img_profile);
 
 
             tv_name.setText(arg2.getString(arg2.getColumnIndex("name")));
@@ -231,27 +281,19 @@ public class MemberSearchActivity extends AppCompatActivity {
         @Override
         public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
             LayoutInflater inflater = LayoutInflater.from(arg0);
-            View v = inflater.inflate(R.layout.item_member_cardview,arg2, false);
+            View v = inflater.inflate(R.layout.listlayout,arg2, false);
             return v;
         }
 
-
-
-    }
-
-
-    public Bitmap loadBitmap(String urlStr) {
-        Bitmap bitmap = null;
-        AssetManager mngr = getResources().getAssets();
-        try{
-            InputStream is = mngr.open(urlStr);
-            bitmap = BitmapFactory.decodeStream(is);
-
-        }catch(Exception e){
-            // Log.e(TAG, "loadDrawable exception" + e.toString());
+        public void imgload(String profile_url, ImageView img_profile) {
+            ProfileIMGLoadTask task = new ProfileIMGLoadTask(profile_url, img_profile);
+            task.execute();
         }
 
-        return bitmap;
+
     }
+
+
+
 
 }

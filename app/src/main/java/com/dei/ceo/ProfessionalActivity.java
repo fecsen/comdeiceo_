@@ -185,10 +185,10 @@ public class ProfessionalActivity extends AppCompatActivity {
             final TextView tv_cellphone= (TextView) arg0.findViewById(R.id.tv_cellphone);
 
             String graphUri=arg2.getString(arg2.getColumnIndex("profile"));
-            graphUri="images/"+graphUri;
 
-            Bitmap bitmap = loadBitmap(graphUri);
-            img_profile.setImageBitmap(bitmap);
+            String profile_url = "https://dei.hivecom.co.kr/dei/profile/" + graphUri;
+            imgload(profile_url, img_profile);
+
 
 
             tv_name.setText(arg2.getString(arg2.getColumnIndex("name")));
@@ -210,18 +210,9 @@ public class ProfessionalActivity extends AppCompatActivity {
     }
 
 
-    public Bitmap loadBitmap(String urlStr) {
-        Bitmap bitmap = null;
-        AssetManager mngr = getResources().getAssets();
-        try{
-            InputStream is = mngr.open(urlStr);
-            bitmap = BitmapFactory.decodeStream(is);
-
-        }catch(Exception e){
-            // Log.e(TAG, "loadDrawable exception" + e.toString());
-        }
-
-        return bitmap;
+    public void imgload(String profile_url, ImageView img_profile) {
+        ProfileIMGLoadTask task = new ProfileIMGLoadTask(profile_url, img_profile);
+        task.execute();
     }
 
 

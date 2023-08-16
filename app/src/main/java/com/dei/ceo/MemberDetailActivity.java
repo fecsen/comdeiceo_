@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,16 +18,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class MemberDetailActivity extends AppCompatActivity {
 
-    String url = "http://dei.hivecom.co.kr/dei/json2.php";
+    String url = "https://dei.hivecom.co.kr/dei/json2.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +56,13 @@ public class MemberDetailActivity extends AppCompatActivity {
         TextView tv_hometel = (TextView) findViewById(R.id.tv_detail_hometel);
         ImageButton ib_sms = (ImageButton) findViewById(R.id.ib_detail_sms);
         ImageButton ib_dial = (ImageButton) findViewById(R.id.ib_detail_dial);
-
         Intent intent = getIntent(); // 蹂대궡�삩 Intent瑜� �뼸�뒗�떎
 
 
         String detail_graphUri = intent.getStringExtra("profile");
-        detail_graphUri = "images/" + detail_graphUri;
+        String profile_url = "https://dei.hivecom.co.kr/dei/profile/" + detail_graphUri;
+        imgload(profile_url, iv_profile);
 
-        Bitmap bitmap = loadBitmap(detail_graphUri);
-
-        iv_profile.setImageBitmap(bitmap);
         tv_name.setText(intent.getStringExtra("name"));
 
         String group_name = intent.getStringExtra("group_name");
@@ -140,6 +145,7 @@ public class MemberDetailActivity extends AppCompatActivity {
 
             }
         });}
+
     public void getData(String url) {
         class GetDataJSON extends AsyncTask<String,Void,String> {
             @Override
@@ -165,12 +171,46 @@ public class MemberDetailActivity extends AppCompatActivity {
             }
             @Override
             protected void onPostExecute(String myJSON) {
-           //     makeList(myJSON); //리스트를 보여줌
+             //   makeList(myJSON); //리스트를 보여줌
              //   Collections.reverse(noticeList); //반전으로 오름차순 정렬
             }
         }
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
+    }
+
+    /** JSON -> LIST 가공 메소드 **/
+    public void makeList(String myJSON) {
+        try {
+            JSONObject jsonObj = new JSONObject(myJSON);
+            posts = jsonObj.getJSONArray(TAG_RESULTS);
+            for(int i=0; i<posts.length(); i++) {
+                //JSON에서 각각의 요소를 뽑아옴
+                JSONObject c = posts.getJSONObject(i);
+                String title = c.getString(TAG_TITLE);
+                String date = c.getString(TAG_DATE);
+                String msg = c.getString(TAG_MSG);
+
+
+                //HashMap에 붙이기
+                HashMap<String,String> posts = new HashMap<String,String>();
+                posts.put(TAG_TITLE,title);
+                posts.put(TAG_DATE,date);
+                posts.put(TAG_MSG, msg);
+                //withshare(title,msg);
+                //ArrayList에 HashMap 붙이기
+                noticeList.add(posts);
+
+            }
+            //카드 리스트뷰 어댑터에 연결
+            NoticeAdapter adapter = new NoticeAdapter(this,noticeList);
+            Log.e("onCreate[noticeList]", "" + noticeList.size());
+            rv.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
+        }catch(JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -206,17 +246,9 @@ public class MemberDetailActivity extends AppCompatActivity {
         }
         return false;
     }
-public Bitmap loadBitmap(String urlStr) {
-        Bitmap bitmap = null;
-        AssetManager mngr = getResources().getAssets();
-        try{
-        InputStream is = mngr.open(urlStr);
-        bitmap = BitmapFactory.decodeStream(is);
+    public void imgload(String profile_url, ImageView img_profile) {
+        ProfileIMGLoadTask task = new ProfileIMGLoadTask(profile_url, img_profile);
+        task.execute();
+    }
 
-        }catch(Exception e){
-        // Log.e(TAG, "loadDrawable exception" + e.toString());
-        }
-
-        return bitmap;
-        }
-        }
+}
