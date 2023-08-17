@@ -1,73 +1,82 @@
 package com.dei.ceo;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.AssetManager;
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.cursoradapter.widget.CursorAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class MemberSearchActivity extends AppCompatActivity {
-    HttpResponse response;
-    EditText et;
-    List<NameValuePair> nameValuePairs;
-    HttpPost httppost;
-    HttpClient httpclient;
-    ListView listview_search = null;
-    DataBaseHelper myDbHelper_search;
-    SQLiteDatabase db_search;
-    String query_search;
-    Cursor cursor_search;
-    DBAdapter_search myadapter;
+
+
     TextView tv_numberoflist;
 
+
+    private static String TAG = "phpinfo";
+    private static final String TAG_RESULTS = "result";
+    private static final String TAG_NAME = "name";
+    private static final String TAG_BIRTH = "birth";
+    private static final String TAG_group_name = "group_name";
+    private static final String TAG_group_position = "group_position";
+    private static final String TAG_job = "job";
+    private static final String TAG_job_addr = "job_addr";
+    private static final String TAG_job_tel = "job_tel";
+    private static final String TAG_job_fax = "job_fax";
+    private static final String TAG_cellphone = "cellphone";
+    private static final String TAG_home_addr = "home_addr";
+    private static final String TAG_home_tel = "home_tel";
+    private static final String TAG_profile = "profile";
+    JSONArray posts = null;
+    ArrayList<HashMap<String, String>> mArrayList;
+
+    String mJsonString;
+    private RecyclerView rv_search;
     Bitmap bitmap;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memeber_search);
 
+        mArrayList = new ArrayList<>();
+        rv_search=(RecyclerView)findViewById(R.id.rv_search);
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        rv_search.setHasFixedSize(true);
+        rv_search.setLayoutManager(layoutManager);
         final EditText et_search = (EditText) findViewById(R.id.et_name);
         tv_numberoflist = (TextView) findViewById(R.id.tv_numberoflist);
         final Button btn_search = (Button) findViewById(R.id.btn_go_search);
@@ -78,7 +87,7 @@ public class MemberSearchActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 // 요기서 입력된 이벤트가 무엇인지 찾아서 실행해 줌
-                switch(actionId) {
+                switch (actionId) {
                     case EditorInfo.IME_ACTION_DONE:
                         btn_search.performClick();
                         break;
@@ -88,20 +97,13 @@ public class MemberSearchActivity extends AppCompatActivity {
         });
 
 
-
         imm.showSoftInput(et_search, 0);
 
-
-        myDbHelper_search = new DataBaseHelper(null);
-        myDbHelper_search = new DataBaseHelper(this);
-
         btn_search.setOnClickListener(new View.OnClickListener() {
-
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View view) {
                 String search_query = et_search.getText().toString();
-
+                mArrayList.clear();
 
                 if (search_query.getBytes().length <= 0)    //edittext�뿉 鍮덇컪�씠 �뱾�뼱�삤硫�
                 {
@@ -109,191 +111,189 @@ public class MemberSearchActivity extends AppCompatActivity {
                     toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
                 } else {
-                    //�궎蹂대뱶瑜� �뾾�븻�떎.
+
                     imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
+                    GetData task = new GetData();
+                    task.execute(search_query);
 
-                    try {
+/*
+                    Intent intent = new Intent(MemberSearchActivity.this, MemberDetailActivity.class);
 
-                        httpclient = new DefaultHttpClient();
-                        httppost = new HttpPost("https://dei.hivecom.co.kr/dei/search.php"); // 로그인PHP
-                        // 정보불러오기
-                        nameValuePairs = new ArrayList<NameValuePair>(1);
-                        // EditText내용 불러오기
-                        nameValuePairs.add(new BasicNameValuePair("name", et.getText().toString()));
-                        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
-                        // httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                        response = httpclient.execute(httppost);
+                    intent.putExtra("profile", str_profile);
+                    intent.putExtra("name", str_name);
+                    intent.putExtra("group_name", str_group_name);
+                    intent.putExtra("cellphone", str_cellphone);
+                    intent.putExtra("birth", str_birth);
+                    intent.putExtra("general_position", str_general_position);
+                    intent.putExtra("group_position", str_group_position);
+                    intent.putExtra("job", str_job);
+                    intent.putExtra("job_addr", str_jobaddr);
+                    intent.putExtra("job_tel", str_jobtel);
+                    intent.putExtra("job_fax", str_jobfax);
+                    intent.putExtra("home_tel", str_hometel);
+                    intent.putExtra("home_addr", str_homeaddr);
+                    startActivity(intent);
 
-                        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                        final String response = httpclient.execute(httppost, responseHandler);
-
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                //tv.setText("PHP 결과 : " + response);
-                                dialog.dismiss();
-                            }
-                        });
-
-                        if (response.equalsIgnoreCase("{\"result\":[]}")) {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    searchfail();
-                                }
-                            });
-
-
-                        } else {
-                            searchsuccess();
-                        }
-
-
-                    } catch (IOException ioe) {
-
-
-
-                    }
-
-                    try {
-
-                        myDbHelper_search.openDataBase();
-
-
-                        selectDB(search_query);
-
-                        if (listview_search != null) {
-
-                            listview_search.setOnItemClickListener(new OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                                    cursor_search.moveToPosition(position);
-
-                                    String str_profile = cursor_search.getString(cursor_search.getColumnIndex("profile"));
-                                    String str_name = cursor_search.getString(cursor_search.getColumnIndex("name"));
-                                    String str_group_name = cursor_search.getString(cursor_search.getColumnIndex("group_name"));
-                                    String str_cellphone = cursor_search.getString(cursor_search.getColumnIndex("cellphone"));
-
-                                    String str_birth = cursor_search.getString(cursor_search.getColumnIndex("birth"));
-                                    String str_general_position = cursor_search.getString(cursor_search.getColumnIndex("general_position"));
-                                    String str_group_position = cursor_search.getString(cursor_search.getColumnIndex("group_position"));
-                                    String str_job = cursor_search.getString(cursor_search.getColumnIndex("job"));
-                                    String str_jobaddr = cursor_search.getString(cursor_search.getColumnIndex("job_addr"));
-                                    String str_jobtel = cursor_search.getString(cursor_search.getColumnIndex("job_tel"));
-                                    String str_jobfax = cursor_search.getString(cursor_search.getColumnIndex("job_fax"));
-                                    String str_hometel = cursor_search.getString(cursor_search.getColumnIndex("home_tel"));
-                                    String str_homeaddr = cursor_search.getString(cursor_search.getColumnIndex("home_addr"));
-
-
-                                    Intent intent = new Intent(MemberSearchActivity.this, MemberDetailActivity.class);
-
-                                    intent.putExtra("profile", str_profile);
-                                    intent.putExtra("name", str_name);
-                                    intent.putExtra("group_name", str_group_name);
-                                    intent.putExtra("cellphone", str_cellphone);
-                                    intent.putExtra("birth", str_birth);
-                                    intent.putExtra("general_position", str_general_position);
-                                    intent.putExtra("group_position", str_group_position);
-                                    intent.putExtra("job", str_job);
-                                    intent.putExtra("job_addr", str_jobaddr);
-                                    intent.putExtra("job_tel", str_jobtel);
-                                    intent.putExtra("job_fax", str_jobfax);
-                                    intent.putExtra("home_tel", str_hometel);
-                                    intent.putExtra("home_addr", str_homeaddr);
-                                    startActivity(intent);
-                                }
-                            });
-                        } else {
-
-                        }
-                    } catch (SQLException sqle) {
-
-                        throw sqle;
-
-                    }
-
+ */
                 }
             }
         });
-
     }
 
+    private class GetData extends AsyncTask<String, Void, String> {
 
-    private void selectDB(String srch_query) {
+        ProgressDialog progressDialog;
+        String errorString = null;
 
-        db_search = myDbHelper_search.getReadableDatabase();
-        query_search="select * from tb_member where name like '%"+srch_query.toString()+"%'";
-        cursor_search = db_search.rawQuery(query_search, null);
-        DBAdapter_search dbadapter_search= new DBAdapter_search(this,cursor_search);
-        //	dbadapter_search.changeCursor(cursor_search);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-
-        if(cursor_search.getCount()>0)
-        {
-
-            startManagingCursor(cursor_search);
-
-            listview_search = (ListView)this.findViewById(R.id.lv_search);
-            listview_search.setAdapter(dbadapter_search);
-            tv_numberoflist.setText("검색하신 결과는 총"+cursor_search.getCount()+"명 입니다.");
-
-        }
-        else
-        {
-            startManagingCursor(cursor_search);
-
-            listview_search = (ListView)this.findViewById(R.id.lv_search);
-            listview_search.setAdapter(dbadapter_search);
-            tv_numberoflist.setText("검색하신 결과는 총"+cursor_search.getCount()+"명 입니다.");
-
-        }
-
-
-    }
-
-
-    public class DBAdapter_search extends CursorAdapter {
-
-        public DBAdapter_search(Context context, Cursor c)
-        {
-            super(context, c);
-
+            progressDialog = ProgressDialog.show(MemberSearchActivity.this,
+                    null, "회원정보를 검색중 입니다.", true, true);
         }
 
 
         @Override
-        public void bindView(View arg0, Context arg1, Cursor arg2) {
-            final ImageView img_profile = (ImageView) arg0.findViewById(R.id.img_profile);
-            final TextView tv_name= (TextView) arg0.findViewById(R.id.tv_name);
-            final TextView tv_group= (TextView) arg0.findViewById(R.id.tv_group);
-            final TextView tv_cellphone= (TextView) arg0.findViewById(R.id.tv_cellphone);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 
-            String graphUri=arg2.getString(arg2.getColumnIndex("profile"));
-            String profile_url = "https://dei.hivecom.co.kr/dei/profile/" + graphUri;
-            imgload(profile_url, img_profile);
+            progressDialog.dismiss();
 
+            if (result == null) {
 
-            tv_name.setText(arg2.getString(arg2.getColumnIndex("name")));
-            tv_group.setText(arg2.getString(arg2.getColumnIndex("group_name"))+"기");
-            tv_cellphone.setText(arg2.getString(arg2.getColumnIndex("cellphone")));
+                   // tv_numberoflist.setText(errorString);
+            } else {
 
-
+                mJsonString = result;
+                showResult();
+            }
         }
+
 
         @Override
-        public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
-            LayoutInflater inflater = LayoutInflater.from(arg0);
-            View v = inflater.inflate(R.layout.listlayout,arg2, false);
-            return v;
-        }
+        protected String doInBackground(String... params) {
 
-        public void imgload(String profile_url, ImageView img_profile) {
-            ProfileIMGLoadTask task = new ProfileIMGLoadTask(profile_url, img_profile);
-            task.execute();
+            String searchKeyword1 = params[0];
+
+
+            String serverURL = "https://dei.hivecom.co.kr/dei/search.php";
+            String postParameters = "name=" + searchKeyword1;
+
+
+            try {
+
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.connect();
+
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+
+                InputStream inputStream;
+                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                } else {
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString().trim();
+
+
+            } catch (Exception e) {
+
+                errorString = e.toString();
+
+                return null;
+            }
+
+        }
+    }
+
+    private void showResult() {
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_RESULTS);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                JSONObject c = jsonArray.getJSONObject(i);
+
+                String name = c.getString(TAG_NAME);
+                String birth = c.getString(TAG_BIRTH);
+                String group_name = c.getString(TAG_group_name);
+                String group_position = c.getString(TAG_group_position);
+                String job = c.getString(TAG_job);
+                String job_addr = c.getString(TAG_job_addr);
+                String job_tel = c.getString(TAG_job_tel);
+                String job_fax = c.getString(TAG_job_fax);
+                String cellphone = c.getString(TAG_cellphone);
+                String home_addr = c.getString(TAG_home_addr);
+                String home_tel = c.getString(TAG_home_tel);
+                String profile = c.getString(TAG_profile);
+
+
+                HashMap<String, String> hashMap = new HashMap<>();
+
+                hashMap.put(TAG_NAME, name);
+                hashMap.put(TAG_BIRTH, birth);
+                hashMap.put(TAG_group_name, group_name);
+                hashMap.put(TAG_group_position, group_position);
+                hashMap.put(TAG_job, job);
+                hashMap.put(TAG_job_addr, job_addr);
+                hashMap.put(TAG_job_tel, job_tel);
+                hashMap.put(TAG_job_fax, job_fax);
+                hashMap.put(TAG_cellphone, cellphone);
+                hashMap.put(TAG_home_addr, home_addr);
+                hashMap.put(TAG_home_tel, home_tel);
+                hashMap.put(TAG_profile, profile);
+
+
+                mArrayList.add(hashMap);
+            }
+
+
+            //카드 리스트뷰 어댑터에 연결
+            MemberAdapter adapter = new MemberAdapter(this,mArrayList);
+            //Log.e("onCreate[noticeList]", "" + mArrayList.size());
+            rv_search.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
+        } catch (JSONException e) {
+
+
         }
 
 
     }
-
-
-
 
 }
+
+

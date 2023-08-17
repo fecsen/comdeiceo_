@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     String myJSON;
     private static final String TAG_RESULTS="result";
     private static final String TAG_TITLE = "title";
-    private static final String TAG_MSG ="msg";
     private static final String TAG_DATE ="date";
     Handler handler = new Handler();
     ImageView iv;

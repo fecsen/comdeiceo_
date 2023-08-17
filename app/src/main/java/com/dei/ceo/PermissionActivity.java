@@ -61,7 +61,7 @@ public class PermissionActivity extends AppCompatActivity {
                 .setPermissionListener(permissionlistener)
                 .setRationaleMessage("모든기능을 사용하기 위한 권한동의입니다.")
                 .setDeniedMessage("거부되었습니다. \n [설정] > [권한] 에서 권한을 허용할 수 있습니다.")
-                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE )
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE )
                 .check();
 
 

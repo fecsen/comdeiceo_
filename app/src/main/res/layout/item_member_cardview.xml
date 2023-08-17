@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/c2v"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:text="이름"
                 android:textColor="#707070"
-                android:textSize="20dp"
+                android:textSize="21dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -72,7 +73,7 @@
                 android:layout_marginTop="10dp"
                 android:text="전화번호"
                 android:textAlignment="viewStart"
-                android:textSize="13dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/tv_position"
@@ -81,7 +82,7 @@
                 android:layout_marginTop="10dp"
                 android:text="직책"
                 android:textAlignment="viewStart"
-                android:textSize="13dp" />
+                android:textSize="16dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

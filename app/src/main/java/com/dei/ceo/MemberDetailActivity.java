@@ -33,7 +33,6 @@ import java.util.HashMap;
 
 public class MemberDetailActivity extends AppCompatActivity {
 
-    String url = "https://dei.hivecom.co.kr/dei/json2.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,72 +145,6 @@ public class MemberDetailActivity extends AppCompatActivity {
             }
         });}
 
-    public void getData(String url) {
-        class GetDataJSON extends AsyncTask<String,Void,String> {
-            @Override
-            protected String doInBackground(String... params) {
-                //JSON 받아온다.
-                String uri = params[0];
-                BufferedReader br = null;
-                try {
-                    URL url = new URL(uri);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    StringBuilder sb = new StringBuilder();
-
-                    br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                    String json;
-                    while((json = br.readLine()) != null) {
-                        sb.append(json+"\n");
-                    }
-                    return sb.toString().trim();
-                }catch (Exception e) {
-                    return null;
-                }
-            }
-            @Override
-            protected void onPostExecute(String myJSON) {
-             //   makeList(myJSON); //리스트를 보여줌
-             //   Collections.reverse(noticeList); //반전으로 오름차순 정렬
-            }
-        }
-        GetDataJSON g = new GetDataJSON();
-        g.execute(url);
-    }
-
-    /** JSON -> LIST 가공 메소드 **/
-    public void makeList(String myJSON) {
-        try {
-            JSONObject jsonObj = new JSONObject(myJSON);
-            posts = jsonObj.getJSONArray(TAG_RESULTS);
-            for(int i=0; i<posts.length(); i++) {
-                //JSON에서 각각의 요소를 뽑아옴
-                JSONObject c = posts.getJSONObject(i);
-                String title = c.getString(TAG_TITLE);
-                String date = c.getString(TAG_DATE);
-                String msg = c.getString(TAG_MSG);
-
-
-                //HashMap에 붙이기
-                HashMap<String,String> posts = new HashMap<String,String>();
-                posts.put(TAG_TITLE,title);
-                posts.put(TAG_DATE,date);
-                posts.put(TAG_MSG, msg);
-                //withshare(title,msg);
-                //ArrayList에 HashMap 붙이기
-                noticeList.add(posts);
-
-            }
-            //카드 리스트뷰 어댑터에 연결
-            NoticeAdapter adapter = new NoticeAdapter(this,noticeList);
-            Log.e("onCreate[noticeList]", "" + noticeList.size());
-            rv.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-
-        }catch(JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
