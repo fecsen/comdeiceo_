@@ -55,7 +55,7 @@ public class MemberDetailActivity extends AppCompatActivity {
         TextView tv_hometel = (TextView) findViewById(R.id.tv_detail_hometel);
         ImageButton ib_sms = (ImageButton) findViewById(R.id.ib_detail_sms);
         ImageButton ib_dial = (ImageButton) findViewById(R.id.ib_detail_dial);
-        Intent intent = getIntent(); // 蹂대궡�삩 Intent瑜� �뼸�뒗�떎
+        Intent intent = getIntent(); // Intent를 Leadersearch,Membersearch에서 받아온다
 
 
         String detail_graphUri = intent.getStringExtra("profile");

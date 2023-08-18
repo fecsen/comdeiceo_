@@ -26,6 +26,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.appupdate.AppUpdateOptions;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "네트워크에 연결되지 않았습니다 !\n일부 기능 사용에 제한을 받을 수 있습니다 !", Toast.LENGTH_LONG).show();
         }
     }
+
 
     public void checkupdate() {
         dialog = new ProgressDialog(this);

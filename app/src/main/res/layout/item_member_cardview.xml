@@ -9,6 +9,7 @@
         android:id="@+id/c2v"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:layout_margin="5dp"
         card_view:cardCornerRadius="3dp">
 
@@ -41,8 +42,9 @@
                 android:id="@+id/tv_namee"
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
                 android:text="이름"
-                android:textColor="#707070"
+                android:textColor="#000000"
                 android:textSize="21dp"
                 android:textStyle="bold" />
 
@@ -53,6 +55,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="-20dp"
+                android:layout_marginEnd="12dp"
                 android:text="기수"
                 android:textAlignment="textEnd"
                 android:textColor="#707070"
@@ -62,7 +65,7 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_above="@+id/tv_date"
+                android:layout_marginEnd="7dp"
                 android:layout_gravity="center"
                 android:background="#000000" />
 
@@ -70,7 +73,7 @@
                 android:id="@+id/tv_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="전화번호"
                 android:textAlignment="viewStart"
                 android:textSize="18dp" />
@@ -79,7 +82,7 @@
                 android:id="@+id/tv_position"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:text="직책"
                 android:textAlignment="viewStart"
                 android:textSize="16dp" />

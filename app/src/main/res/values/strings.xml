@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">동의산업대학원 회원수첩</string>
+    <string name="app_name">동의산업문화대학원 회원수첩</string>
     <string name="default_notification_channel_id">공지사항</string>
     <string name="check_version">버전을 확인하고 있습니다</string>
     <string name="latest_version">최신버전을 사용하고 있습니다</string>

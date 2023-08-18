@@ -58,6 +58,9 @@ public class MemberSearchActivity extends AppCompatActivity {
     private static final String TAG_home_addr = "home_addr";
     private static final String TAG_home_tel = "home_tel";
     private static final String TAG_profile = "profile";
+
+    MemberAdapter MA;
+
     JSONArray posts = null;
     ArrayList<HashMap<String, String>> mArrayList;
 
@@ -82,14 +85,18 @@ public class MemberSearchActivity extends AppCompatActivity {
         final Button btn_search = (Button) findViewById(R.id.btn_go_search);
         final InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         EditText testEdit = (EditText) findViewById(R.id.et_name);
+        testEdit.requestFocus();
+        imm.showSoftInput(et_search, 0);
         testEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 // 요기서 입력된 이벤트가 무엇인지 찾아서 실행해 줌
                 switch (actionId) {
-                    case EditorInfo.IME_ACTION_DONE:
+                    case EditorInfo.IME_ACTION_SEARCH:
                         btn_search.performClick();
+                        imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
+
                         break;
                 }
                 return false;
@@ -97,7 +104,7 @@ public class MemberSearchActivity extends AppCompatActivity {
         });
 
 
-        imm.showSoftInput(et_search, 0);
+
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,26 +122,6 @@ public class MemberSearchActivity extends AppCompatActivity {
                     imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
                     GetData task = new GetData();
                     task.execute(search_query);
-
-/*
-                    Intent intent = new Intent(MemberSearchActivity.this, MemberDetailActivity.class);
-
-                    intent.putExtra("profile", str_profile);
-                    intent.putExtra("name", str_name);
-                    intent.putExtra("group_name", str_group_name);
-                    intent.putExtra("cellphone", str_cellphone);
-                    intent.putExtra("birth", str_birth);
-                    intent.putExtra("general_position", str_general_position);
-                    intent.putExtra("group_position", str_group_position);
-                    intent.putExtra("job", str_job);
-                    intent.putExtra("job_addr", str_jobaddr);
-                    intent.putExtra("job_tel", str_jobtel);
-                    intent.putExtra("job_fax", str_jobfax);
-                    intent.putExtra("home_tel", str_hometel);
-                    intent.putExtra("home_addr", str_homeaddr);
-                    startActivity(intent);
-
- */
                 }
             }
         });
@@ -285,6 +272,8 @@ public class MemberSearchActivity extends AppCompatActivity {
             //Log.e("onCreate[noticeList]", "" + mArrayList.size());
             rv_search.setAdapter(adapter);
             adapter.notifyDataSetChanged();
+            int totalItemRows = adapter.mArrayList.size();
+            tv_numberoflist.setText("검색하신 결과는 " + totalItemRows + "명 입니다." );
 
         } catch (JSONException e) {
 

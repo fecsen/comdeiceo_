@@ -1,5 +1,7 @@
 package com.dei.ceo;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -8,9 +10,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,203 +26,230 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LeaderSearchDetailActivity extends AppCompatActivity {
-	//ArrayAdapter<String> adapter=null;
-		ListView listview=null;
-		DataBaseHelper myDbHelper;
-		SQLiteDatabase db;
-		String query;
-		Cursor cursor;
+		ArrayList<HashMap<String, String>> mArrayList;
+		String mJsonString;
+		private RecyclerView lv_search;
+		private static String TAG = "phpinfo";
+		private static final String TAG_RESULTS = "result";
+		private static final String TAG_NAME = "name";
+		private static final String TAG_BIRTH = "birth";
+		private static final String TAG_group_name = "group_name";
+		private static final String TAG_group_position = "group_position";
+		private static final String TAG_job = "job";
+		private static final String TAG_job_addr = "job_addr";
+		private static final String TAG_job_tel = "job_tel";
+		private static final String TAG_job_fax = "job_fax";
+		private static final String TAG_cellphone = "cellphone";
+		private static final String TAG_home_addr = "home_addr";
+		private static final String TAG_home_tel = "home_tel";
+		private static final String TAG_profile = "profile";
 		
-		
-			
+
+		@SuppressLint("SuspiciousIndentation")
 		@Override
-		protected void onCreate(Bundle savedInstanceState)
-		{
+		protected void onCreate(Bundle savedInstanceState) {
 			
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_leader_detail);
 
-			
-			//TextView tv_name = (TextView)findViewById(R.id.tv_01);
-			
-			 Intent intent = getIntent(); // 보내온 Intent를 얻는다
-			 String group_name = intent.getStringExtra("group_name");
-			
+			Intent intent = getIntent(); // 보내온 Intent를 얻는다
+			String group_name = intent.getStringExtra("group_name");
+
+
+
+			mArrayList = new ArrayList<>();
+			lv_search=(RecyclerView)findViewById(R.id.lv_01);
+			LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+			lv_search.setHasFixedSize(true);
+			lv_search.setLayoutManager(layoutManager);
+
 			 int int_group_name= Integer.parseInt(group_name);
 			 final String str_chk_group_name= String.valueOf(int_group_name) ;
-			 if(int_group_name ==0)
-			 {
-				// tv_name.setText("임원진");
-				 this.setTitle(intent.getStringExtra("임원진"));
-				
-			 }
-			 else
-				//tv_name.setText(intent.getStringExtra("group_name")+"기");
-				this.setTitle(intent.getStringExtra("group_name")+"기");
-			
-		    myDbHelper = new DataBaseHelper(null);
-	        myDbHelper = new DataBaseHelper(this);
-	 
-	        try 
-	        {
-	 
-	        	myDbHelper.createDataBase();
-	 
-		 	} 
-	        catch (IOException ioe)
-	        {
-		 
-		 		throw new Error("Unable to create database");
-		 
-		 	}
-		 
-		 	try 
-		 	{
-		 
-		 		myDbHelper.openDataBase();
-		 		
-		 		selectDB(group_name);
-		 		
-		 		if(listview !=null)
-		 		{
-		 		
-		 		listview.setOnItemClickListener(new OnItemClickListener() {
-		 			 @Override
-		 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		 				cursor.moveToPosition(position);
-		 				
-		 				
-		 				String str_name = cursor.getString(cursor.getColumnIndex("name"));
-		 				String str_cellphone = cursor.getString(cursor.getColumnIndex("cellphone"));
-		 				String str_birth = cursor.getString(cursor.getColumnIndex("birth"));
-		 				String str_general_order = cursor.getString(cursor.getColumnIndex("general_order"));
-		 				String str_general_position = cursor.getString(cursor.getColumnIndex("general_position"));
-		 				String str_group_name = cursor.getString(cursor.getColumnIndex("group_name"));
-		 				String str_group_order = cursor.getString(cursor.getColumnIndex("group_order"));
-		 				String str_group_position = cursor.getString(cursor.getColumnIndex("group_position"));
-		 				String str_job = cursor.getString(cursor.getColumnIndex("job"));
-		 				String str_jobaddr = cursor.getString(cursor.getColumnIndex("job_addr"));
-		 				String str_jobtel = cursor.getString(cursor.getColumnIndex("job_tel"));
-		 				String str_jobfax = cursor.getString(cursor.getColumnIndex("job_fax"));
-		 				String str_hometel = cursor.getString(cursor.getColumnIndex("home_tel"));
-		 				String str_homeaddr = cursor.getString(cursor.getColumnIndex("home_addr"));
-		 				String str_profile= cursor.getString(cursor.getColumnIndex("profile"));
-		 				
-		 				
-		 				
-		 				Intent intent = new Intent(LeaderSearchDetailActivity.this, MemberDetailActivity.class);
-		 	          
-		 				intent.putExtra("chkgeneral", str_chk_group_name);
-		 				
-		 	            intent.putExtra("name",str_name);
-		 	           
-		 	            intent.putExtra("cellphone",str_cellphone);
-		 	            intent.putExtra("birth",str_birth);
-		 	            intent.putExtra("general_order",str_general_order);
-		 	            intent.putExtra("general_position",str_general_position);
-		 	            intent.putExtra("group_name",str_group_name);
-		 	            intent.putExtra("group_order",str_group_order);
-		 	            intent.putExtra("group_position",str_group_position);
-		 	            
-		 	            intent.putExtra("job",str_job);
-		 	            intent.putExtra("job_addr",str_jobaddr);
-		 	            intent.putExtra("job_tel",str_jobtel);
-		 	            intent.putExtra("job_fax",str_jobfax);
-		 	            intent.putExtra("home_tel",str_hometel);
-		 	            intent.putExtra("home_addr",str_homeaddr);
-		 	            intent.putExtra("profile",str_profile);
-		 	            startActivity(intent);
-			 			}
-					});
-		 		}
-		 	}
-		 	catch(SQLException sqle)
-		 	{
-		 
-		 		throw sqle;
-	 
-		 	}
-	 
-			
-		}
 
-		private void selectDB(String group_name)
-		{
-		
-			db =  myDbHelper.getReadableDatabase();
-			
-			 Intent intent = getIntent(); // 보내온 Intent를 얻는다
-			 String chk_general = intent.getStringExtra("group_name");
-			 int int_chk_general= Integer.parseInt(chk_general);
-			 
-			 if(int_chk_general ==0)
-				query="select * from tb_member where general_position is not null";
-			 else
-				query="select * from tb_member where group_name="+group_name.toString();
-			
-			cursor = db.rawQuery(query, null);
-			
-			
-			if(cursor.getCount()>0)
-			{
-				startManagingCursor(cursor);
-				DBAdapter dbadapter= new DBAdapter(this,cursor);
-				
-				listview = (ListView)this.findViewById(R.id.lv_01);
-				listview.setAdapter(dbadapter);
-				
+			if(int_group_name ==0) {
+				this.setTitle("원장단");
 			}
-			
-		}
-		
-		
-		
-		public class DBAdapter extends CursorAdapter {
-
-			public DBAdapter(Context context, Cursor c) {
-				super(context, c);
-				// TODO Auto-generated constructor stub
+			else {
+				this.setTitle(intent.getStringExtra("group_name") + "기");
 			}
 
-			@Override
-			public void bindView(View arg0, Context arg1, Cursor arg2) {
-				final ImageView img_profile = (ImageView) arg0.findViewById(R.id.img_profile);
-				final TextView tv_name= (TextView) arg0.findViewById(R.id.tv_name);
-				final TextView tv_group= (TextView) arg0.findViewById(R.id.tv_group);
-				final TextView tv_cellphone= (TextView) arg0.findViewById(R.id.tv_cellphone);
-				
-				String graphUri=arg2.getString(arg2.getColumnIndex("profile"));
-				String profile_url = "https://dei.hivecom.co.kr/dei/profile/" + graphUri;
-				imgload(profile_url, img_profile);
-				
-				
-				tv_name.setText(arg2.getString(arg2.getColumnIndex("name")));
-				tv_group.setText(arg2.getString(arg2.getColumnIndex("group_name"))+"기");
-				tv_cellphone.setText(arg2.getString(arg2.getColumnIndex("cellphone")));
-				
-
-			}
-
-			@Override
-			public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
-				LayoutInflater inflater = LayoutInflater.from(arg0);
-				View v = inflater.inflate(R.layout.listlayout,arg2, false);
-				return v;
-			}
-			
-
+			GetData task = new GetData();
+			task.execute(str_chk_group_name);
 
 		}
 
 
-	public void imgload(String profile_url, ImageView img_profile) {
-		ProfileIMGLoadTask task = new ProfileIMGLoadTask(profile_url, img_profile);
-		task.execute();
+	private class GetData extends AsyncTask<String, Void, String> {
+
+		ProgressDialog progressDialog;
+		String errorString = null;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+			progressDialog = ProgressDialog.show(LeaderSearchDetailActivity.this,
+					null, "회원정보를 검색중 입니다.", true, true);
+		}
+
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+
+			progressDialog.dismiss();
+
+			if (result == null) {
+
+				// tv_numberoflist.setText(errorString);
+			} else {
+
+				mJsonString = result;
+				showResult();
+			}
+		}
+
+
+		@Override
+		protected String doInBackground(String... params) {
+
+			String searchKeyword1 = params[0];
+
+
+			String serverURL = "https://dei.hivecom.co.kr/dei/group_search.php";
+			String postParameters = "group_name=" + searchKeyword1;
+
+
+			try {
+
+				URL url = new URL(serverURL);
+				HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+
+				httpURLConnection.setReadTimeout(5000);
+				httpURLConnection.setConnectTimeout(5000);
+				httpURLConnection.setRequestMethod("POST");
+				httpURLConnection.setDoInput(true);
+				httpURLConnection.connect();
+
+
+				OutputStream outputStream = httpURLConnection.getOutputStream();
+				outputStream.write(postParameters.getBytes("UTF-8"));
+				outputStream.flush();
+				outputStream.close();
+
+
+				int responseStatusCode = httpURLConnection.getResponseCode();
+
+				InputStream inputStream;
+				if (responseStatusCode == HttpURLConnection.HTTP_OK) {
+					inputStream = httpURLConnection.getInputStream();
+				} else {
+					inputStream = httpURLConnection.getErrorStream();
+				}
+
+
+				InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+				StringBuilder sb = new StringBuilder();
+				String line;
+
+				while ((line = bufferedReader.readLine()) != null) {
+					sb.append(line);
+				}
+
+
+				bufferedReader.close();
+
+
+				return sb.toString().trim();
+
+
+			} catch (Exception e) {
+
+				errorString = e.toString();
+
+				return null;
+			}
+
+		}
 	}
 
 
+	private void showResult() {
+		try {
+			JSONObject jsonObject = new JSONObject(mJsonString);
+			JSONArray jsonArray = jsonObject.getJSONArray(TAG_RESULTS);
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+
+				JSONObject c = jsonArray.getJSONObject(i);
+
+				String name = c.getString(TAG_NAME);
+				String birth = c.getString(TAG_BIRTH);
+				String group_name = c.getString(TAG_group_name);
+				String group_position = c.getString(TAG_group_position);
+				String job = c.getString(TAG_job);
+				String job_addr = c.getString(TAG_job_addr);
+				String job_tel = c.getString(TAG_job_tel);
+				String job_fax = c.getString(TAG_job_fax);
+				String cellphone = c.getString(TAG_cellphone);
+				String home_addr = c.getString(TAG_home_addr);
+				String home_tel = c.getString(TAG_home_tel);
+				String profile = c.getString(TAG_profile);
+
+
+				HashMap<String, String> hashMap = new HashMap<>();
+
+				hashMap.put(TAG_NAME, name);
+				hashMap.put(TAG_BIRTH, birth);
+				hashMap.put(TAG_group_name, group_name);
+				hashMap.put(TAG_group_position, group_position);
+				hashMap.put(TAG_job, job);
+				hashMap.put(TAG_job_addr, job_addr);
+				hashMap.put(TAG_job_tel, job_tel);
+				hashMap.put(TAG_job_fax, job_fax);
+				hashMap.put(TAG_cellphone, cellphone);
+				hashMap.put(TAG_home_addr, home_addr);
+				hashMap.put(TAG_home_tel, home_tel);
+				hashMap.put(TAG_profile, profile);
+
+
+				mArrayList.add(hashMap);
+			}
+
+
+			//카드 리스트뷰 어댑터에 연결
+			MemberAdapter adapter = new MemberAdapter(this,mArrayList);
+			//Log.e("onCreate[noticeList]", "" + mArrayList.size());
+			lv_search.setAdapter(adapter);
+			adapter.notifyDataSetChanged();
+
+		} catch (JSONException e) {
+
+
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mArrayList.clear();
+	}
 }
