@@ -121,7 +121,7 @@ public static Activity AActivity;
             public void run() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                 builder.setTitle("로그인 실패!");
-                builder.setIcon(R.drawable.failed);
+                builder.setIcon(R.drawable.baseline_close_24);
                 builder.setMessage("로그인에 실패 하였습니다. \n이름과 전화번호에 오류가 없는지 확인하여 주세요.")
                         .setCancelable(false)
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -158,7 +158,7 @@ public static Activity AActivity;
                 builder.setTitle(inPutText);
                 sp = getSharedPreferences("login",0);
                 edit = sp.edit();
-                builder.setIcon(R.drawable.successd);
+                builder.setIcon(R.drawable.baseline_check_24);
                 builder.setMessage("로그인에 성공하였습니다.")
                         .setCancelable(false)
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {

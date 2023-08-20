@@ -10,6 +10,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.cursoradapter.widget.CursorAdapter;
@@ -70,16 +72,14 @@ public class LeaderSearchDetailActivity extends AppCompatActivity {
 			Intent intent = getIntent(); // 보내온 Intent를 얻는다
 			String group_name = intent.getStringExtra("group_name");
 
-
-
 			mArrayList = new ArrayList<>();
 			lv_search=(RecyclerView)findViewById(R.id.lv_01);
 			LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
 			lv_search.setHasFixedSize(true);
 			lv_search.setLayoutManager(layoutManager);
 
-			 int int_group_name= Integer.parseInt(group_name);
-			 final String str_chk_group_name= String.valueOf(int_group_name) ;
+			int int_group_name= Integer.parseInt(group_name);
+			final String str_chk_group_name= String.valueOf(int_group_name) ;
 
 			if(int_group_name ==0) {
 				this.setTitle("원장단");
@@ -87,9 +87,20 @@ public class LeaderSearchDetailActivity extends AppCompatActivity {
 			else {
 				this.setTitle(intent.getStringExtra("group_name") + "기");
 			}
+			ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
 
-			GetData task = new GetData();
-			task.execute(str_chk_group_name);
+			if (activeNetwork != null) {
+				// connected to the internet
+				if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE ) { // connected to wifi
+					GetData task = new GetData();
+					task.execute(str_chk_group_name);
+				}
+			} else {
+				Intent mintent = new Intent(this, NoInternetActivity.class);
+				startActivity(mintent);
+				finish();
+			}
 
 		}
 

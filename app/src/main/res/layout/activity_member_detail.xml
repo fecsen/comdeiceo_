@@ -16,105 +16,156 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
-            <TextView
-                android:id="@+id/tv_detail_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="30sp"
-
-                />
-
-            <ImageView
-                android:id="@+id/iv_detail_profile"
-                android:layout_width="115dp"
-                android:layout_height="138dp"
-
-                />
-
-            <TextView
-                android:id="@+id/tv_detail_birth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
-            <TextView
-                android:id="@+id/tv_detail_general_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
-            <TextView
-                android:id="@+id/tv_detail_group_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
-            <TextView
-                android:id="@+id/tv_detail_group_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_height="wrap_content" >
 
-                >
-                <TextView
-                    android:id="@+id/tv_detail_cellphone"
-                    android:layout_width="wrap_content"
+
+                <ImageView
+                    android:id="@+id/iv_detail_profile"
+                    android:layout_width="130dp"
+                    android:background="@color/cardview_dark_background"
+                    android:layout_height="160dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:orientation="vertical">
 
-                    />
-                <ImageButton
-                    android:id="@+id/ib_detail_sms"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    <TextView
+                        android:id="@+id/tv_detail_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이름"
+                        android:textColor="#000000"
+                        android:letterSpacing="0.3"
+                        android:textSize="30sp"/>
 
-                    android:background="@drawable/ico_sms"
-                    android:layout_marginLeft="10sp"
-                    />
-                <ImageButton
-                    android:id="@+id/ib_detail_dial"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/ico_dial"
-                    android:layout_marginLeft="10sp"
+                    <TextView
+                        android:id="@+id/tv_detail_birth"
+                        android:layout_width="wrap_content"
+                        android:textColor="#000000"
+                        android:text="생일"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        android:textSize="15sp"/>
 
-                    />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_height="wrap_content">
 
+                        <TextView
+                            android:id="@+id/tv_detail_group_name"
+                            android:layout_width="wrap_content"
+                            android:text="기수"
+                            android:textColor="#000000"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="/"
+                            android:textColor="#000000"
+                            android:textSize="25sp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:id="@+id/tv_detail_group_position"
+                            android:layout_width="wrap_content"
+                            android:textColor="#000000"
+                            android:text="기수직책"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_detail_general_position"
+                        android:layout_width="wrap_content"
+                        android:textColor="#000000"
+                        android:layout_height="wrap_content"
+                        android:text="총동창회 직책"
+                        android:layout_marginStart="5sp"
+                        android:textSize="20sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_detail_cellphone"
+                        android:layout_width="wrap_content"
+                        android:text="전화번호"
+                        android:textColor="#000000"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="25sp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content">
+                        <ImageButton
+                            android:id="@+id/ib_detail_dial"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/baseline_phone_24"/>
+                        <ImageButton
+                            android:id="@+id/ib_detail_sms"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/baseline_message_24"
+                            android:layout_marginLeft="10sp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="#000000" />
+
             <TextView
                 android:id="@+id/tv_detail_job"
                 android:layout_width="wrap_content"
+                android:textColor="#000000"
+                android:text="직장이름"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="20sp"/>
             <TextView
                 android:id="@+id/tv_detail_jobaddr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
+                android:text="직장주소"
+                android:textColor="#000000"
+                android:textSize="20sp"/>
             <TextView
                 android:id="@+id/tv_detail_jobtel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
+                android:text="직장전번"
+                android:textColor="#000000"
+                android:textSize="20sp"/>
             <TextView
                 android:id="@+id/tv_detail_jobfax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
+                android:text="직장팩스"
+                android:textSize="20sp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:background="#003565" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

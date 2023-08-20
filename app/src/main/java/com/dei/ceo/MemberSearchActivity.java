@@ -2,9 +2,13 @@ package com.dei.ceo;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -74,6 +78,28 @@ public class MemberSearchActivity extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memeber_search);
+
+        ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
+
+        if (activeNetwork != null) {
+            // connected to the internet
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE ) { // connected to wifi
+                onStart();
+            }
+        } else {
+            Intent mintent = new Intent(this, NoInternetActivity.class);
+            startActivity(mintent);
+            finish();
+        }
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
 
         mArrayList = new ArrayList<>();
         rv_search=(RecyclerView)findViewById(R.id.rv_search);

@@ -56,6 +56,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, tt);
                 intent.putExtra(Intent.EXTRA_TEXT, mm);
+                //intent.putExtra(Intent.EXT,"동의대학교 산업문화대학원 총동창회 회원수첩 - 공지사항");
                 context.startActivity(Intent.createChooser(intent, "공유하기"));
             }
         });
