@@ -16,8 +16,6 @@ public class NoInternetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_no_internet_connect);
-        ImageView imagView = (ImageView)findViewById(R.id.nointernet) ;
-        Glide.with(NoInternetActivity.this).load(R.drawable.nointernett).override(300,300).into(imagView);
     }
 }
 

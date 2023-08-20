@@ -13,11 +13,6 @@ import android.widget.ListView;
 public class LeaderSearchActivity extends AppCompatActivity implements View.OnClickListener {
 
     //ArrayAdapter<String> adapter=null;
-    ListView listview = null;
-    DataBaseHelper myDbHelper;
-    SQLiteDatabase db;
-    String query;
-    Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,49 +78,6 @@ public class LeaderSearchActivity extends AppCompatActivity implements View.OnCl
         b29.setOnClickListener(this);
         Button b30 = (Button) findViewById(R.id.b30);
         b30.setOnClickListener(this);
-  /*      myDbHelper = new DataBaseHelper(null);
-        myDbHelper = new DataBaseHelper(this);
-
-        try {
-
-            myDbHelper.createDataBase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDataBase();
-
-            selectDB();
-            listview.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    cursor.moveToPosition(position);
-
-                    String str_profile = cursor.getString(cursor.getColumnIndex("profile"));
-                    String str_name = cursor.getString(cursor.getColumnIndex("name"));
-                    String str_groupname = cursor.getString(cursor.getColumnIndex("groupname"));
-                    String str_cellphone = cursor.getString(cursor.getColumnIndex("cellphone"));
-
-                    Intent intent = new Intent(LeaderSearchActivity.this, MemberDetailActivity.class);
-
-                    intent.putExtra("profile", str_profile);
-                    intent.putExtra("name", str_name);
-                    intent.putExtra("groupname", str_groupname);
-                    intent.putExtra("cellphone", str_cellphone);
-                    startActivity(intent);
-                }
-            });
-
-        } catch (SQLException sqle) {
-
-            throw sqle;
-
-        }*/
 
     }
 
@@ -303,76 +255,3 @@ public class LeaderSearchActivity extends AppCompatActivity implements View.OnCl
 
     }
 }
-   /* private void selectDB()
-	{
-		db =  myDbHelper.getReadableDatabase();
-		query="select * from tb_member";
-
-		cursor = db.rawQuery(query, null);
-		if(cursor.getCount()>0)
-		{
-			startManagingCursor(cursor);
-			DBAdapter dbadapter= new DBAdapter(this,cursor);
-			listview = (ListView)this.findViewById(R.id.lv_01);
-			listview.setAdapter(dbadapter);
-
-		}
-	}
-
-
-
-	public class DBAdapter extends CursorAdapter {
-
-		public DBAdapter(Context context, Cursor c) {
-			super(context, c);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public void bindView(View arg0, Context arg1, Cursor arg2) {
-			final ImageView img_profile = (ImageView) arg0.findViewById(R.id.img_profile);
-			final TextView tv_name= (TextView) arg0.findViewById(R.id.tv_name);
-			final TextView tv_group= (TextView) arg0.findViewById(R.id.tv_group);
-			final TextView tv_cellphone= (TextView) arg0.findViewById(R.id.tv_cellphone);
-			final ImageView img_view=(ImageView) arg0.findViewById(R.id.iv5);
-
-			String graphUri=arg2.getString(arg2.getColumnIndex("profile"));
-
-			Bitmap bitmap = loadBitmap(graphUri);
-			img_profile.setImageBitmap(bitmap);
-
-
-			tv_name.setText("�씠由�:"+ arg2.getString(arg2.getColumnIndex("name")));
-			tv_group.setText("湲곗닔:"+ arg2.getString(arg2.getColumnIndex("group_name")));
-			tv_cellphone.setText("HP:"+ arg2.getString(arg2.getColumnIndex("cellphone")));
-
-
-		}
-
-		@Override
-		public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {
-			LayoutInflater inflater = LayoutInflater.from(arg0);
-			View v = inflater.inflate(R.layout.listlayout,arg2, false);
-			return v;
-		}
-
-
-
-	}
-
-
-	public Bitmap loadBitmap(String urlStr) {
-	     Bitmap bitmap = null;
-	     AssetManager mngr = getResources().getAssets();
-	     try{
-	      InputStream is = mngr.open(urlStr);
-	      bitmap = BitmapFactory.decodeStream(is);
-
-	     }catch(Exception e){
-	     // Log.e(TAG, "loadDrawable exception" + e.toString());
-	     }
-
-	     return bitmap;
-	    }
-}
-*/

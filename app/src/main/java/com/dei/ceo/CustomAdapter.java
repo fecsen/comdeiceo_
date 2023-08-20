@@ -86,7 +86,7 @@ public class CustomAdapter extends PagerAdapter {
 
         //현재 position에 해당하는 이미지를 setting
 
-        img.setImageResource(R.drawable.laaw_01+position);
+        img.setImageResource(R.drawable.law_01+position);
 
 
 

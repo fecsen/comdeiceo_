@@ -6,8 +6,11 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +18,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class MemberDetailActivity extends AppCompatActivity {
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,16 +55,13 @@ public class MemberDetailActivity extends AppCompatActivity {
         TextView tv_hometel = (TextView) findViewById(R.id.tv_detail_hometel);
         ImageButton ib_sms = (ImageButton) findViewById(R.id.ib_detail_sms);
         ImageButton ib_dial = (ImageButton) findViewById(R.id.ib_detail_dial);
-
-        Intent intent = getIntent(); // 蹂대궡�삩 Intent瑜� �뼸�뒗�떎
+        Intent intent = getIntent(); // Intent를 Leadersearch,Membersearch에서 받아온다
 
 
         String detail_graphUri = intent.getStringExtra("profile");
-        detail_graphUri = "images/" + detail_graphUri;
+        String profile_url = "https://dei.hivecom.co.kr/dei/profile/" + detail_graphUri;
+        imgload(profile_url, iv_profile);
 
-        Bitmap bitmap = loadBitmap(detail_graphUri);
-
-        iv_profile.setImageBitmap(bitmap);
         tv_name.setText(intent.getStringExtra("name"));
 
         String group_name = intent.getStringExtra("group_name");
@@ -166,17 +179,9 @@ public class MemberDetailActivity extends AppCompatActivity {
         }
         return false;
     }
-public Bitmap loadBitmap(String urlStr) {
-        Bitmap bitmap = null;
-        AssetManager mngr = getResources().getAssets();
-        try{
-        InputStream is = mngr.open(urlStr);
-        bitmap = BitmapFactory.decodeStream(is);
+    public void imgload(String profile_url, ImageView img_profile) {
+        ProfileIMGLoadTask task = new ProfileIMGLoadTask(profile_url, img_profile);
+        task.execute();
+    }
 
-        }catch(Exception e){
-        // Log.e(TAG, "loadDrawable exception" + e.toString());
-        }
-
-        return bitmap;
-        }
-        }
+}

@@ -25,7 +25,7 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(mintent);
     }
     public void bosss(View v) {
-        Intent mintent = new Intent(this, ProfessionalActivity.class);
+        Intent mintent = new Intent(this, LeaderSearchDetailActivity.class);
         mintent.putExtra("group_name","0");
         startActivity(mintent);
     }

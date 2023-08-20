@@ -72,19 +72,6 @@ public class NoticeFragment extends AppCompatActivity {
         rv.setLayoutManager(layoutManager);
 
         noticeList = new ArrayList<HashMap<String, String>>();
-   //     mLinearLayoutManager = new LinearLayoutManager(this);
-       // mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-    ///    rv = (RecyclerView) view.findViewById(R.id.rv);
-      //  rv.setHasFixedSize(true);
-       // rv.setLayoutManager(mLinearLayoutManager);
-        Log.e("KTH","fds");
-        //폰 내 db와 연결하여 uid 얻어와 보내기 - Fragment 이기 때문에 context가 getActivity()
-      //  helper = new DBhelper(getActivity(), "users2.db",null,DBhelper.DB_VER);
-   //     url += "?uid=" + helper.getId(getActivity());
-     //   Log.e("getuid: ", helper.getId(getActivity()));
-
-
-        //return view;
 
     }
 
@@ -166,7 +153,6 @@ public class NoticeFragment extends AppCompatActivity {
             }
             //카드 리스트뷰 어댑터에 연결
             NoticeAdapter adapter = new NoticeAdapter(this,noticeList);
-            Log.e("onCreate[noticeList]", "" + noticeList.size());
             rv.setAdapter(adapter);
             adapter.notifyDataSetChanged();
 
